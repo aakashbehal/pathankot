@@ -1,0 +1,12 @@
+.slots{
+    display: inline-flex;
+}
+.slot{
+    border: 1px solid green;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+    background: #007100;
+    color: white;
+    font-weight: 600;
+}
