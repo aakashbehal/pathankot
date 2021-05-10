@@ -6,7 +6,14 @@
     border-radius: 10px;
     padding: 10px;
     margin: 5px;
-    background: #007100;
-    color: white;
     font-weight: 600;
+}
+.available {
+    color: green;
+}
+.not_available {
+    color: red;
+}
+.partially_available{
+    color: orange;
 }

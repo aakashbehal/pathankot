@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+.app_btn{
+  padding: 5px 10px;
+  background: palegreen;
+  border: 1px solid darkgreen;
+  margin: 10px;
+}

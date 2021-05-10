@@ -1,9 +1,9 @@
 import React from 'react';
-import Slots from './../Slots/slots'
+import Sessions from './../sessions/sessions'
 
 import Styles from './locations.module.css'
 
-const Locations = ({locations}) => {
+const Locations = ({locations, setPlay}) => {
     return (
         <div className={Styles.locations}>
           {
@@ -11,24 +11,22 @@ const Locations = ({locations}) => {
               name, 
               pincode, 
               address, 
-              available_capacity,
-              min_age_limit,
               fee_type,
               vaccine,
-              slots
+              sessions,
+              center_id
             }) => {
               return (
-                <div className={Styles.location}>
-                  <h2><span style={{"color": "red"}}>{min_age_limit}+</span> ({fee_type})</h2>
+                <div key={center_id} className={Styles.location}>
+                  <h2>({fee_type})</h2>
                   <h3>{vaccine}</h3>
                   <h3>{name}</h3>
                   <p><small>pincode: {pincode}</small></p>
+                  <p><small>center Id: {center_id}</small></p>
                   <br/>
                   <p>Address: {address}</p>
                   <br/>
-                  <h2>Available capacity: {available_capacity}</h2>
-                  <br/>
-                  { slots.length > 0 ? <Slots slots={slots}/> : <p>No Slots Available</p>}
+                  <Sessions sessions={sessions} setPlay={setPlay}/>
                 </div>
               )
             })
