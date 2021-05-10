@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import moment from 'moment';
 import audioUrl from './nuke_alarm.mp3'
 import './App.css';
@@ -26,9 +26,12 @@ function App() {
           return true
         })
         setCenter(centersArray)
-        timerToRecall(districtId)
       })
   }
+  useEffect(()=>{
+    if (centers)
+      timerToRecall(143)
+  }, [centers])
 
   const timerToRecall = (districtId) => {
     let a, b
@@ -36,7 +39,9 @@ function App() {
     clearInterval(b)
     a = setInterval(() => {
       getPinCode(districtId)
-      setTimer(60000)
+      setTimer((timer) => {
+        return 60000
+      })
     }, 60000)
     b = setInterval(() => {
       setTimer((timer) => {
@@ -54,7 +59,7 @@ function App() {
         </>
       }
       <br />
-      {Math.floor(timer / 60000)}m {((timer % 60000)/1000).toFixed(0)}s
+      {/* {Math.floor(timer / 60000)}m {((timer % 60000)/1000).toFixed(0)}s */}
       <Locations locations={centers} setPlay={setPlay}/>
     </div>  
   );
