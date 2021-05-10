@@ -59,7 +59,7 @@ function App() {
     <div className="App">
       {
         <>
-          <button className="app_btn" onClick={() => getPinCode(143)}>Rohini</button>
+          <button className="app_btn" onClick={() => getPinCode(148)}>Shadhara</button>
         </>
       }
       <br />
