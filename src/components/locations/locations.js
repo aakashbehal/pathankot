@@ -6,6 +6,9 @@ import Styles from './locations.module.css'
 const Locations = ({locations, setPlay}) => {
     return (
         <div className={Styles.locations}>
+          <div style={{textAlign: "center", width: '100%'}}>
+          {locations && locations.length === 0 && <p style={{color: 'orange', textAlign: "center", "fontWeight": "bold"}}>No slots available for 18+</p>}
+          </div>
           {
             locations && locations.map(({
               name, 

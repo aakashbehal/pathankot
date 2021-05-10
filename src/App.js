@@ -4,17 +4,17 @@ import audioUrl from './nuke_alarm.mp3'
 import './App.css';
 import Locations from './components/locations/locations'
 
+const TimerCounter = 20000
 
 const baseUrl2 = `https://cdn-api.co-vin.in/api/v2/appointment/sessions/`
 const audio = new Audio(audioUrl)
-audio.loop=true;
 function App() {
-
+  let a, b
   const setPlay = () => {
-      audio.play()
+    audio.play()
   }
   const [centers, setCenter] = useState(null)
-  const [timer, setTimer] = useState(60000)
+  const [timer, setTimer] = useState(TimerCounter)
 
   const getPinCode = (districtId) => {
     const date = moment().format('DD-MM-YYYY')
@@ -23,30 +23,34 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         const centersArray = data.centers.filter((center) => {
-          return true
+          for(let i = 0; i < center.sessions.length; i++) {
+            if(
+              center.sessions[i].available_capacity > 0 
+              && center.sessions[i].min_age_limit === 18
+            ) {
+              return true
+            }
+          }
+          return false
         })
         setCenter(centersArray)
+        timerToRecall(143)
       })
   }
-  useEffect(()=>{
-    if (centers)
-      timerToRecall(143)
-  }, [centers])
 
   const timerToRecall = (districtId) => {
-    let a, b
     clearInterval(a)
     clearInterval(b)
+    setTimer(TimerCounter)
     a = setInterval(() => {
       getPinCode(districtId)
-      setTimer((timer) => {
-        return 60000
-      })
-    }, 60000)
+    }, TimerCounter)
     b = setInterval(() => {
       setTimer((timer) => {
+        console.log(timer)
         return timer - 1000
       })
+      
     }, 1000)
   }
 
@@ -59,7 +63,8 @@ function App() {
         </>
       }
       <br />
-      {/* {Math.floor(timer / 60000)}m {((timer % 60000)/1000).toFixed(0)}s */}
+      {/* {Math.floor(timer / 10000)}m  */}
+      {((timer % TimerCounter)/1000).toFixed(0)}s
       <Locations locations={centers} setPlay={setPlay}/>
     </div>  
   );
