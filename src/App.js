@@ -13,9 +13,8 @@ function App() {
   const setPlay = () => {
       audio.play()
   }
-  const [selected, setSelected2] = useState('')
   const [centers, setCenter] = useState(null)
-  const [timer, setTimer] = useState(20000)
+  const [timer, setTimer] = useState(60000)
 
   const getPinCode = (districtId) => {
     const date = moment().format('DD-MM-YYYY')
@@ -37,8 +36,8 @@ function App() {
     clearInterval(b)
     a = setInterval(() => {
       getPinCode(districtId)
-      setTimer(20000)
-    }, 20000)
+      setTimer(60000)
+    }, 60000)
     b = setInterval(() => {
       setTimer((timer) => {
         return timer - 1000
@@ -52,11 +51,10 @@ function App() {
       {
         <>
           <button className="app_btn" onClick={() => getPinCode(143)}>Rohini</button>
-          <button className="app_btn" onClick={() => getPinCode(148)}>Shadhara</button>
         </>
       }
       <br />
-      {/* {((timer % 20000)/1000).toFixed(0)}s */}
+      {Math.floor(timer / 60000)}m {((timer % 60000)/1000).toFixed(0)}s
       <Locations locations={centers} setPlay={setPlay}/>
     </div>  
   );
