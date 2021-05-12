@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import moment from 'moment';
 import audioUrl from './nuke_alarm.mp3'
 import './App.css';
@@ -38,7 +38,7 @@ function App() {
   
   
   const getDistrict = (e, state_id) => {
-    activate('states', e)
+    // activate('states', e)
     const URL = `${baseUrl2}admin/location/districts/${state_id}`
     fetch(URL)
       .then((res) => res.json())
@@ -52,7 +52,7 @@ function App() {
   }, [])
 
   const getPinCode = (e, districtId) => {
-    activate('districts', e)
+    // activate('districts', e)
     setUnAuthError(null)
     const date = moment().format('DD-MM-YYYY')
     const URL = `${baseUrl2}appointment/sessions/calendarByDistrict?district_id=${districtId}&date=${date}`
@@ -64,6 +64,7 @@ function App() {
             if(
               center.sessions[i].available_capacity > 0 
               && center.sessions[i].min_age_limit === 18
+              && center.sessions[i].vaccine === "COVISHIELD"
             ) {
               return true
             }
