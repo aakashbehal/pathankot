@@ -9,7 +9,7 @@ const TimerCounter = 20000
 const baseUrl2 = `https://cdn-api.co-vin.in/api/v2/`
 const audio = new Audio(audioUrl)
 function App() {
-  let a, b
+  
   const setPlay = () => {
     audio.play()
   }
@@ -17,6 +17,7 @@ function App() {
   const [districts, setDistricts] = useState(null)
   const [centers, setCenter] = useState(null)
   const [timer, setTimer] = useState(TimerCounter)
+  const [sDistrictId, setSDistrictId] = useState(null)
   const [unAuthError, setUnAuthError] = useState(null)
 
   const getState = () => {
@@ -38,7 +39,8 @@ function App() {
   
   
   const getDistrict = (e, state_id) => {
-    // activate('states', e)
+    if (e)
+      activate('states', e)
     const URL = `${baseUrl2}admin/location/districts/${state_id}`
     fetch(URL)
       .then((res) => res.json())
@@ -51,8 +53,15 @@ function App() {
     getState()
   }, [])
 
-  const getPinCode = (e, districtId) => {
-    // activate('districts', e)
+  useEffect(() => {
+    if(sDistrictId)
+      timerToRecall()
+  }, [sDistrictId])
+
+  const getPinCode = (districtId, e) => {
+    if(e)
+      activate('districts', e)
+    setSDistrictId(districtId)
     setUnAuthError(null)
     const date = moment().format('DD-MM-YYYY')
     const URL = `${baseUrl2}appointment/sessions/calendarByDistrict?district_id=${districtId}&date=${date}`
@@ -72,21 +81,19 @@ function App() {
           return false
         })
         setCenter(centersArray)
-        timerToRecall(143)
       })
       .catch((error) => {
         setUnAuthError(error)
       })
   }
 
-  const timerToRecall = (districtId) => {
-    clearInterval(a)
-    clearInterval(b)
+  const timerToRecall = () => {
+    console.log(sDistrictId)
     setTimer(TimerCounter)
-    a = setInterval(() => {
-      getPinCode(districtId)
+    setInterval(() => {
+      getPinCode(sDistrictId)
     }, TimerCounter)
-    b = setInterval(() => {
+    setInterval(() => {
       setTimer((timer) => {
         return timer - 1000
       })
@@ -101,7 +108,7 @@ function App() {
       <div className="states">
         {
           states && states.map((state) => {
-            return <button className="app_btn" onClick={(e) => getDistrict(e, state.state_id)}>{state.state_name}</button>
+            return <button key={state.state_id} className="app_btn" onClick={(e) => getDistrict(e, state.state_id)}>{state.state_name}</button>
           })
         }
       </div>
@@ -109,11 +116,10 @@ function App() {
       <div className="districts">
       {
         districts && districts.map((district) => {
-          return <button className="app_btn" onClick={(e) => getPinCode(e, district.district_id)}>{district.district_name}</button>
+          return <button key={district.district_id} className="app_btn" onClick={(e) => getPinCode(district.district_id, e)}>{district.district_name}</button>
         })
       }
       </div>
-     
       <br />
       <h1>Available Slots</h1>
       { unAuthError && <h2 style={{color: 'red'}}>unAuthError</h2> }
