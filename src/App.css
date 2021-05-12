@@ -42,4 +42,14 @@
   background: palegreen;
   border: 1px solid darkgreen;
   margin: 10px;
+  font-weight: 600;
+}
+
+.states .app_btn.active {
+  background-color: darkgreen;
+  color: white;
+}
+.districts .app_btn.active {
+  background-color: darkgreen;
+  color: white;
 }
