@@ -19,6 +19,7 @@ function App() {
   const [timer, setTimer] = useState(TimerCounter)
   const [sDistrictId, setSDistrictId] = useState(null)
   const [unAuthError, setUnAuthError] = useState(null)
+  const [loading, setLoading] = useState(null)
 
   const getState = () => {
     const URL = `${baseUrl2}admin/location/states`
@@ -61,6 +62,7 @@ function App() {
   const getPinCode = (districtId, e) => {
     if(e)
       activate('districts', e)
+    setLoading(true)
     setSDistrictId(districtId)
     setUnAuthError(null)
     const date = moment().format('DD-MM-YYYY')
@@ -80,6 +82,7 @@ function App() {
           }
           return false
         })
+        setLoading(false)
         setCenter(centersArray)
       })
       .catch((error) => {
@@ -122,8 +125,9 @@ function App() {
       </div>
       <br />
       <h1>Available Slots</h1>
-      { unAuthError && <h2 style={{color: 'red'}}>unAuthError</h2> }
-      { !unAuthError && <Locations locations={centers} setPlay={setPlay}/>}
+      { loading && <p>Loading....</p>}
+      { unAuthError && !loading && <h2 style={{color: 'red'}}>unAuthError</h2> }
+      { !unAuthError && !loading && <Locations locations={centers} setPlay={setPlay}/>}
     </div>  
   );
 }
